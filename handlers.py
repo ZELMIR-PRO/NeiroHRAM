@@ -75,10 +75,10 @@ def plan_info_text(plan: str) -> str:
     return info.get(plan, "")
 
 PLAN_IMAGES = {
-    "free":  "FREE.png",
-    "pro":   "PRO.png",
-    "ultra": "ULTRA.png",
-    "max":   "MAX.png",
+    "free":  "free.png",
+    "pro":   "pro.png",
+    "ultra": "ultra.png",
+    "max":   "max.png",
 }
 
 async def send_main_menu(message: Message, state: FSMContext):

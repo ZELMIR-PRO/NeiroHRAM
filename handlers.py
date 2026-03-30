@@ -75,10 +75,10 @@ def plan_info_text(plan: str) -> str:
     return info.get(plan, "")
 
 PLAN_IMAGES = {
-    "free":  "free.png",
-    "pro":   "pro.png",
-    "ultra": "ultra.png",
-    "max":   "max.png",
+    "free":  "FREE.png",
+    "pro":   "PRO.png",
+    "ultra": "ULTRA.png",
+    "max":   "MAX.png",
 }
 
 async def send_main_menu(message: Message, state: FSMContext):
@@ -161,13 +161,25 @@ async def cb_profile(cb: CallbackQuery):
     await cb.answer()
 
 @router.callback_query(F.data == "subscriptions")
-async def cb_subscriptions(cb: CallbackQuery, state: FSMContext):
+async def cb_subscriptions(cb: CallbackQuery, state: FSMContext, bot: Bot):
     await state.set_state(UserState.idle)
-    await cb.message.edit_text(
-        "💳 <b>Подписки НЕЙРОХРАМ</b>\n\nВыбери план для подробностей:",
-        reply_markup=subscriptions_kb(),
-        parse_mode="HTML"
-    )
+    try:
+        await cb.message.edit_text(
+            "💳 <b>Подписки НЕЙРОХРАМ</b>\n\nВыбери план для подробностей:",
+            reply_markup=subscriptions_kb(),
+            parse_mode="HTML"
+        )
+    except Exception:
+        try:
+            await cb.message.delete()
+        except Exception:
+            pass
+        await bot.send_message(
+            cb.from_user.id,
+            "💳 <b>Подписки НЕЙРОХРАМ</b>\n\nВыбери план для подробностей:",
+            reply_markup=subscriptions_kb(),
+            parse_mode="HTML"
+        )
     await cb.answer()
 
 @router.callback_query(F.data.startswith("sub_info:"))
